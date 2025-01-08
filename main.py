@@ -7,7 +7,7 @@ import pandas as pd
 # PATH = os.environ.get("STREAMLIT_SQLIT_PATH")
 # conn = sqlite3.connect(PATH)  # Replace 'your_database.db' with your desired filename
 
-conn = sqlite3.connect("streamlite.sqlit")  # Replace 'your_database.db' with your desired filename  SAME DIRECTORY AS APP
+conn = sqlite3.connect("streamlite.sqlite")  # Replace 'your_database.db' with your desired filename  SAME DIRECTORY AS APP
 
 
 cursor = conn.cursor()
