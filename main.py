@@ -1,12 +1,15 @@
-
 import os
 import streamlit as st
 import sqlite3
 import pandas as pd
 
 # Establish a connection to the SQLite database (or create it if it doesn't exist)
-PATH = os.environ.get("STREAMLIT_SQLIT_PATH")
-conn = sqlite3.connect(PATH)  # Replace 'your_database.db' with your desired filename
+# PATH = os.environ.get("STREAMLIT_SQLIT_PATH")
+# conn = sqlite3.connect(PATH)  # Replace 'your_database.db' with your desired filename
+
+conn = sqlite3.connect("streamlite.sqlit")  # Replace 'your_database.db' with your desired filename  SAME DIRECTORY AS APP
+
+
 cursor = conn.cursor()
 
 def delete_items(selected_indices, df):  # Refactor into a function
@@ -30,7 +33,7 @@ def fetch_data(): # Function to fetch data fresh each time
     return df
 
 
-def update_items( df):
+def update_items(df):
 
     try:
         for index, row in df.iterrows():
@@ -45,14 +48,7 @@ def update_items( df):
         st.error(f"Error deleting items: {e}")
         return False # Indicate failure      
 
-# Streamlit interaction example:
-
-# # Add items to the database
-st.subheader("Add Item")
-item_name = st.text_input("Item Name")
-item_quantity = st.number_input("Quantity", min_value=0, step=1)
-
-if st.button("Add"):
+def add_item():
     try:
         cursor.execute("INSERT INTO items (name, quantity) VALUES (?, ?)", (item_name, item_quantity))
         conn.commit()
@@ -60,7 +56,17 @@ if st.button("Add"):
 
     except Exception as e:
         conn.rollback()  # Rollback in case of error
-        st.error(f"Error deleting items: {e}")
+        st.error(f"Error deleting items: {e}")    
+
+
+# Streamlit interaction example:
+# # Add items to the database
+st.subheader("Add Item")
+item_name = st.text_input("Item Name")
+item_quantity = st.number_input("Quantity", min_value=0, step=1)
+
+if st.button("Add"):
+    add_item()
 
 
 # Display the database contents
@@ -85,22 +91,8 @@ with st.expander("Update Quantities"):  # Makes the update section collapsible
 
 
 
-
-
 # Close the connection when the app is done (important!)
 conn.close()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
